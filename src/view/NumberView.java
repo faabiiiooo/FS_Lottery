@@ -24,6 +24,7 @@ public class NumberView extends GridPane {
         for(int i = 0; i < NUM_ROWS; i++){
             for(int j = 0; j < NUM_COLUMNS; j++){
                 ToggleButton number = new ToggleButton(value+"");
+                number.setPrefSize(40,40);
                 number.selectedProperty().addListener(((observable, oldValue, newValue) -> {
 
                     if(newValue){
@@ -39,11 +40,7 @@ public class NumberView extends GridPane {
                         selections--;
                         for(ToggleButton tb : toggleButtons){
                             if(!tb.isSelected()){
-                                tb.setDisable(false
-
-
-
-                                );
+                                tb.setDisable(false);
                             }
                         }
                     }

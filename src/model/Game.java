@@ -53,6 +53,8 @@ public class Game {
         this.luckyTip = -1;
     }
 
+    public int getLuckyTip(){return this.luckyTip;}
+
 
     public String toString(){
         return "Game Nr.: "+(GAME_ID+1);

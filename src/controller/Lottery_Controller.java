@@ -1,11 +1,14 @@
 package controller;
 
 import app.Lottery;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ToggleButton;
 import model.Game;
 import model.Lottery_Model;
+import model.NumberGen;
 import view.GameView;
 import view.Lottery_View;
 import view.NumberView;
@@ -32,6 +35,7 @@ public class Lottery_Controller {
 
     private void setViewsOnAction(){
 
+        model.getStoreWins().addListener((ListChangeListener)c -> displayWins());
 
         view.getGameList().getSelectionModel().selectedIndexProperty().addListener(((observable, oldValue, newValue) -> {
             view.showOtherGame((int)newValue);
@@ -48,9 +52,31 @@ public class Lottery_Controller {
 
         view.getBtnAddGame().setOnAction(e -> addGame());
         view.getBtnRemoveGame().setOnAction(e -> removeGame());
+        view.getControlArea().getBtnSimulateLottery().setOnAction(e -> simulateLotto());
 
 
     }
+
+    private void simulateLotto(){
+        //generation of winNumbers
+        NumberGen generator = new NumberGen();
+        //display winNumbers
+        view.getWinNumbersView().displayWinNumbers(generator.getWinNumbers(),generator.getWinLuckyTip());
+        //model evaluates lotto
+        model.playLotto();
+
+    }
+
+    private void displayWins(){
+        String toSubmit = "Your Evals: \n";
+        for(String s : model.getStoreWins()){
+            toSubmit+= s+"\n";
+        }
+        view.getWinNumbersView().displayWinType(toSubmit);
+        System.out.println(toSubmit);
+
+    }
+
 
     private void addGame(){
 

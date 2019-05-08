@@ -21,6 +21,8 @@ public class Lottery_View extends BorderPane {
     protected Lottery_Model model;
     protected GameList gameList;
     protected GameView gameView;
+    protected WinNumbersView winNumbersView;
+    protected ControlArea controlArea;
 
     private final ObservableList<GameView> gameViews = FXCollections.observableArrayList();
     private final Button btnAddGame, btnRemoveGame;
@@ -32,6 +34,7 @@ public class Lottery_View extends BorderPane {
         btnAddGame = new Button("+");
         btnRemoveGame = new Button("-");
         gameList = new GameList(model);
+        winNumbersView = new WinNumbersView();
 
         for(int i = 0; i < Lottery.MIN_TIP_FIELDS; i++){
             gameViews.add(new GameView());
@@ -44,11 +47,12 @@ public class Lottery_View extends BorderPane {
         VBox controlList = new VBox();
         controlList.getChildren().addAll(gameList,buttons);
 
-        ControlArea controlArea = new ControlArea(model);
+        controlArea = new ControlArea(model);
 
 
         this.setCenter(gameViews.get(0));
         this.setLeft(controlList);
+        this.setRight(winNumbersView);
         this.setBottom(controlArea);
 
 
@@ -74,6 +78,10 @@ public class Lottery_View extends BorderPane {
     public Button getBtnAddGame(){return this.btnAddGame;}
 
     public Button getBtnRemoveGame(){ return  this.btnRemoveGame; }
+
+    public WinNumbersView getWinNumbersView(){return this.winNumbersView; }
+
+    public ControlArea getControlArea(){return this.controlArea; }
 
     public void showOtherGame(int id){ this.setCenter(gameViews.get(id));  }
 }
