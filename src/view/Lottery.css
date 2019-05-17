@@ -1,0 +1,111 @@
+.root {
+    -fx-background-color: #FFE8E8;
+    -fx-font-size: 14px;
+    -fx-font-family: Arial;
+}
+
+#hbox-gameView{
+    -fx-font-weight: bold;
+}
+
+#hbox-selectedTips{
+    -fx-spacing: 5;
+}
+
+.lbl-selectedTips {
+    -fx-background-color: #E1E1E1;
+    -fx-pref-height: 40;
+    -fx-pref-width: 40;
+    -fx-alignment: center;
+}
+
+#lbl-luckytip{
+    -fx-background-color: gold;
+    -fx-pref-height: 40;
+    -fx-pref-width: 40;
+    -fx-alignment: center;
+}
+
+.btn-numbers{
+    -fx-background-color: white;
+    -fx-text-fill: red;
+}
+.btn-numbers:hover{
+    -fx-background-color: #FFE8E8;
+
+}
+
+.btn-numbers:selected{
+    -fx-background-color: #485BA9;
+    -fx-text-fill: white;
+}
+
+.tb-luckytip{
+    -fx-background-color: lightyellow;
+    -fx-text-fill: darkorange;
+    -fx-background-radius: 150;
+}
+
+.tb-luckytip:hover{
+    -fx-background-color: gold;
+}
+
+.tb-luckytip:selected{
+    -fx-background-color: gold;
+    -fx-text-fill: brown;
+}
+
+.lbl-winNumber{
+    -fx-font-weight: bold;
+    -fx-pref-height: 60;
+    -fx-pref-width: 60;
+    -fx-background-color: white;
+    -fx-background-radius: 30;
+    -fx-alignment: center;
+}
+
+#lbl-winLuckyTipNumber{
+    -fx-font-weight: bold;
+    -fx-pref-height: 60;
+    -fx-pref-width: 60;
+    -fx-background-color: lightyellow;
+    -fx-background-radius: 30;
+    -fx-alignment: center;
+    -fx-text-fill: brown;
+}
+
+#list-gameList{
+    -fx-border-width: none;
+    -fx-max-height: 338;
+}
+
+#list-gameList .list-cell:odd, .list-cell:even{
+    -fx-background-color: #FFE8E8;
+}
+
+#list-gameList .list-cell:filled:hover{
+    -fx-background-color: #485BA9;
+    -fx-text-fill: white;
+}
+
+#list-gameList .list-cell:selected{
+    -fx-background-color: #485BA9;
+    -fx-text-fill: white;
+}
+
+.btn-controls{
+    -fx-background-color: white;
+    -fx-pref-width: 120;
+}
+
+.btn-controls:hover{
+    -fx-background-color: #485BA9;
+    -fx-text-fill: white;
+}
+
+.tb-winnerNum{
+    -fx-background-color: red;
+}
+.tb-winnerNum:selected{
+    -fx-background-color: green;
+}

@@ -19,6 +19,12 @@ public class Game {
 
     private int luckyTip= -1;
 
+    private boolean replay = false;
+
+    private int numReplay;
+
+    private boolean gameFilled;
+
     public Game(int gameId){
         GAME_ID = gameId;
         tipNumbers = new ArrayList<>();
@@ -33,15 +39,14 @@ public class Game {
 
     public void addSelectedTip(int tip){
 
-        if(!tipsSelected.contains(tip)){
+        if(!tipsSelected.contains(tip)) {
             tipsSelected.add(tip);
-            System.out.println("Tipp added"+tip);}
-        else{
+
+        }else{
             removeSelectedTip(tip);}
     }
 
     public void removeSelectedTip(int tip){
-        System.out.println("tip removed:"+tip);
         tipsSelected.remove(Integer.valueOf(tip));
     }
 
@@ -55,9 +60,14 @@ public class Game {
 
     public int getLuckyTip(){return this.luckyTip;}
 
+    public void setReplay(boolean replay){ this.replay = replay;}
+
+    public boolean getReplay(){return this.replay;}
 
     public String toString(){
         return "Game Nr.: "+(GAME_ID+1);
     }
+
+    public void setNumReplay(int numReplay){ this.numReplay = numReplay; }
 
 }

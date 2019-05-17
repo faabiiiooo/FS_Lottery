@@ -13,10 +13,11 @@ public class LuckyTipView extends HBox {
 
     private int selections = 0;
     private final int MAX_SELECTIONS = 1;
+    private boolean luckyTipSelected = false;
 
     public LuckyTipView(){
 
-        ToggleGroup luckyGroup = new ToggleGroup();
+
         for(int i = 1; i <= Lottery.HIGHEST_LUCKY_TIP; i++ ){
             ToggleButton number = new ToggleButton(i+"");
             number.setPrefSize(40,40);
@@ -25,6 +26,7 @@ public class LuckyTipView extends HBox {
                 if(newValue){
                     selections++;
                     if(selections == MAX_SELECTIONS){
+                        luckyTipSelected = true;
                         for(ToggleButton tb : toggleButtons){
                             if(!tb.isSelected()){
                                 tb.setDisable(true);
@@ -33,6 +35,7 @@ public class LuckyTipView extends HBox {
                     }
                 } else {
                     selections--;
+                    luckyTipSelected = false;
                     for(ToggleButton tb : toggleButtons){
                         if(!tb.isSelected()){
                             tb.setDisable(false);
@@ -43,10 +46,13 @@ public class LuckyTipView extends HBox {
             }));
             number.getStyleClass().add("tb-luckytip");
             toggleButtons.add(number);
+            this.setSpacing(5);
             this.getChildren().add(number);
         }
 
     }
 
     public ArrayList<ToggleButton> getToggleButtons(){return this.toggleButtons;}
+
+    public boolean isLuckyTipSelected(){return this.luckyTipSelected;}
 }

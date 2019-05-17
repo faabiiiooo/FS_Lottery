@@ -3,7 +3,9 @@ package model;
 import app.Lottery;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 
+import javax.print.attribute.standard.MediaSize;
 import java.util.ArrayList;
 
 
@@ -14,12 +16,15 @@ public class Lottery_Model {
     private final ObservableList<String> storeWins = FXCollections.observableArrayList();
     private static int gameIdTemplate = 0;
     private final Money money;
+    protected static int count61;
+    private final OtherPlayer otherPlayer = new OtherPlayer();
 
 
 
     public Lottery_Model() {
 
-        money = new Money(20.0);
+        count61 = 0;
+        money = new Money();
 
         for(int i = 0; i < Lottery.MIN_TIP_FIELDS; i++){
             games.add(new Game(i));
@@ -34,6 +39,7 @@ public class Lottery_Model {
     public void playLotto(){
 
         storeWins.clear();
+        new Thread(otherPlayer).start();
 
         for(Game g : games){
             ArrayList<Integer> tempTips = new ArrayList<>();
@@ -41,16 +47,36 @@ public class Lottery_Model {
                 tempTips.add(i);
             }
             WinType winType = WinType.evaluateWinType(tempTips,g.getLuckyTip());
-            storeWins.add((g.GAME_ID+1)+WinType.asString(winType));
+            if(!winType.equals(WinType.six1)){
+                money.transferWin(Jackpot.checkJackpotWon(winType));
+            } else {
+                count61++;
+            }
+            storeWins.add("Game "+(g.GAME_ID+1)+" :\t"+WinType.asString(winType));
         }
 
+        if(count61 > 0){
+            double jackpot = Jackpot.jackpot / count61;
+            Jackpot.resetJackpot();
+            money.transferWin(jackpot);
+        }
+
+        money.saveToFile();
+
        // for(String s : storeWins) System.out.println(s);
+    }
 
+    public void resetLotto(){
 
+        games.clear();
+        for(int i = 0; i < Lottery.MIN_TIP_FIELDS; i++){
+            games.add(new Game(i));
+            money.reduceMoney();
+            gameIdTemplate = i+1;
+        }
 
 
     }
-
 
     public void addGame(){
         games.add(new Game(gameIdTemplate));
@@ -70,6 +96,8 @@ public class Lottery_Model {
     public ObservableList<String> getStoreWins() { return this.storeWins; }
 
     public Money getMoney(){return this.money;}
+
+    public OtherPlayer getOtherPlayer(){return this.otherPlayer; }
 
 
 

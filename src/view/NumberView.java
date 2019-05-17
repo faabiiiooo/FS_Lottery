@@ -14,6 +14,7 @@ public class NumberView extends GridPane {
     private final int MAX_SELECTIONS= 6;
     private int selections = 0;
     private int value = 1;
+    private boolean numbersSelected = false;
 
     private ArrayList<ToggleButton> toggleButtons;
 
@@ -25,11 +26,13 @@ public class NumberView extends GridPane {
             for(int j = 0; j < NUM_COLUMNS; j++){
                 ToggleButton number = new ToggleButton(value+"");
                 number.setPrefSize(40,40);
+                number.getStyleClass().add("btn-numbers");
                 number.selectedProperty().addListener(((observable, oldValue, newValue) -> {
 
                     if(newValue){
                         selections++;
                         if(selections == MAX_SELECTIONS){
+                            numbersSelected = true;
                             for(ToggleButton tb : toggleButtons){
                                 if(!tb.isSelected()){
                                     tb.setDisable(true);
@@ -38,6 +41,7 @@ public class NumberView extends GridPane {
                         }
                     } else {
                         selections--;
+                        numbersSelected = false;
                         for(ToggleButton tb : toggleButtons){
                             if(!tb.isSelected()){
                                 tb.setDisable(false);
@@ -51,11 +55,15 @@ public class NumberView extends GridPane {
                 value++;
             }
         }
+        this.setHgap(5);
+        this.setVgap(5);
     }
 
     public ArrayList<ToggleButton> getToggleButtons(){
         return this.toggleButtons;
     }
+
+    public boolean isNumbersSelected(){return this.numbersSelected; }
 
 
 }

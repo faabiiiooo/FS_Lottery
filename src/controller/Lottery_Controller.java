@@ -1,30 +1,35 @@
 package controller;
 
 import app.Lottery;
+import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ToggleButton;
+import javafx.stage.Stage;
 import model.Game;
 import model.Lottery_Model;
 import model.NumberGen;
 import view.GameView;
 import view.Lottery_View;
 import view.NumberView;
+import view.SimulateProgress;
 
-
+import java.util.Collections;
 
 
 public class Lottery_Controller {
 
+    private Stage primaryStage;
     private Lottery_Model model;
     private Lottery_View view;
-    private NumberView numView;
+    //private NumberView numView;
 
 
-    public Lottery_Controller(Lottery_Model model, Lottery_View view){
+    public Lottery_Controller(Stage primaryStage, Lottery_Model model, Lottery_View view){
 
+        this.primaryStage = primaryStage;
         this.model = model;
         this.view = view;
 
@@ -37,6 +42,8 @@ public class Lottery_Controller {
 
         model.getStoreWins().addListener((ListChangeListener)c -> displayWins());
 
+
+
         view.getGameList().getSelectionModel().selectedIndexProperty().addListener(((observable, oldValue, newValue) -> {
             view.showOtherGame((int)newValue);
         }));
@@ -48,22 +55,71 @@ public class Lottery_Controller {
             for(ToggleButton tb : view.getGameViews().get(i).getTipView().getLuckyTip().getToggleButtons()){
                 tb.setOnAction(e -> luckyTipSelected(e));
             }
+
+        }
+
+
+        for(GameView gv : view.getGameViews()){
+            gv.getTipView().getNumOfReplays().textProperty().addListener(((observable, oldValue, newValue) -> {
+                if(!newValue.matches("\\d{0,2}")|| newValue.isEmpty()){
+                    gv.getTipView().getNumOfReplays().setStyle("-fx-text-fill: red");
+                    view.getControlArea().getBtnSimulateLottery().setDisable(true);
+                } else {
+                    gv.getTipView().getNumOfReplays().setStyle("-fx-text-fill: green");
+                    view.getControlArea().getBtnSimulateLottery().setDisable(false);
+                }
+            }));
+
+            gv.getTipView().getReplay().selectedProperty().addListener(((observable, oldValue, newValue) -> {
+                if(!newValue){
+                    gv.getTipView().getNumOfReplays().setDisable(true);
+                    gv.getTipView().getSaveReplay().setDisable(true);
+                } else {
+                    gv.getTipView().getNumOfReplays().setDisable(false);
+                    gv.getTipView().getSaveReplay().setDisable(false);
+                }
+            }));
+
+            gv.getTipView().getSaveReplay().setOnAction(e -> {
+                model.getGames().get(view.getGameViews().indexOf(gv)).setReplay(true);
+                model.getGames().get(view.getGameViews().indexOf(gv)).setNumReplay(
+                        Integer.parseInt(gv.getTipView().getNumOfReplays().getText()));
+                gv.getTipView().getSaveReplay().setDisable(true);
+                gv.getTipView().getNumOfReplays().setDisable(true);
+                gv.getTipView().getReplay().setDisable(true);
+            });
         }
 
         view.getBtnAddGame().setOnAction(e -> addGame());
         view.getBtnRemoveGame().setOnAction(e -> removeGame());
         view.getControlArea().getBtnSimulateLottery().setOnAction(e -> simulateLotto());
+        view.getControlArea().getBtnResetLottery().setOnAction(e -> resetLotto());
 
 
     }
 
     private void simulateLotto(){
+
         //generation of winNumbers
         NumberGen generator = new NumberGen();
         //display winNumbers
         view.getWinNumbersView().displayWinNumbers(generator.getWinNumbers(),generator.getWinLuckyTip());
         //model evaluates lotto
+        SimulateProgress progressWindow = new SimulateProgress();
+        progressWindow.getProgressBar().progressProperty().bind(model.getOtherPlayer().progressProperty());
         model.playLotto();
+
+        //view.disableToggleButtons();
+
+    }
+
+    private void resetLotto(){
+
+
+
+        model = new Lottery_Model();
+        view = new Lottery_View(primaryStage,model);
+        this.setViewsOnAction();
 
     }
 
@@ -72,8 +128,7 @@ public class Lottery_Controller {
         for(String s : model.getStoreWins()){
             toSubmit+= s+"\n";
         }
-        view.getWinNumbersView().displayWinType(toSubmit);
-        System.out.println(toSubmit);
+        view.showWinEval(toSubmit);
 
     }
 

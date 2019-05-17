@@ -14,6 +14,7 @@ public class Lottery extends Application {
     public static final int MIN_TIP_FIELDS=2;
     public static final int MAX_TIPS = 6;
     public static final int MAX_GAMES = 14;
+    public static final int MAX_REPLAYS = 3;
 
     public static void main(String[] args){
         launch(args);
@@ -23,6 +24,6 @@ public class Lottery extends Application {
 
         Lottery_Model model = new Lottery_Model();
         Lottery_View view = new Lottery_View(primaryStage, model);
-        Lottery_Controller controller = new Lottery_Controller(model,view);
+        Lottery_Controller controller = new Lottery_Controller(primaryStage,model,view);
     }
 }

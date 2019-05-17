@@ -10,6 +10,7 @@ public class GameList extends ListView<Game> {
 
         this.setItems(model.getGames());
         this.getSelectionModel().selectFirst();
+        this.setId("list-gameList");
 
     }
 }

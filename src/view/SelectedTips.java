@@ -20,12 +20,14 @@ public class SelectedTips extends HBox {
 
         for(int i = 0; i < Lottery.MAX_TIPS; i++){
             lblSelectedTips.add(new Label());
+            this.lblSelectedTips.get(i).getStyleClass().add("lbl-selectedTips");
             this.getChildren().add(lblSelectedTips.get(i));
         }
         lblLuckyTip = new Label();
         lblLuckyTip.setId("lbl-luckytip");
         this.getChildren().add(lblLuckyTip);
         //this.tip.add(this);
+        this.setId("hbox-selectedTips");
     }
 
     public void displaySelectedTip(int tip){

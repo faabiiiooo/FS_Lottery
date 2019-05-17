@@ -17,6 +17,7 @@ public class GameView extends HBox {
         btnAddGame = new Button("+");
 
         this.getChildren().addAll(tipView,selectedTips);
+        this.setId("hbox-gameView");
 
     }
 
