@@ -3,6 +3,7 @@ package view;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import model.Lottery_Model;
+import model.NumberGen;
 
 
 import java.lang.reflect.Array;
@@ -64,6 +65,7 @@ public class NumberView extends GridPane {
     }
 
     public boolean isNumbersSelected(){return this.numbersSelected; }
+
 
 
 }

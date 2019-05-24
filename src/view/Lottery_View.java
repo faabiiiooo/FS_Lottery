@@ -6,6 +6,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -74,6 +75,7 @@ public class Lottery_View extends BorderPane {
         this.primaryStage.setResizable(false);
         this.primaryStage.setScene(scene);
         this.primaryStage.setTitle("Swiss Lotto");
+        this.primaryStage.getIcons().add(new Image("./resources/logo.png"));
         this.primaryStage.show();
 
     }
@@ -87,7 +89,6 @@ public class Lottery_View extends BorderPane {
         }
 
     }
-
 
 
     public void addGame(){
@@ -115,4 +116,6 @@ public class Lottery_View extends BorderPane {
     public void showWinEval(String winEval){this.lblWinEval.setText(winEval);}
 
     public void setModel(Lottery_Model model){this.model = model;}
+
+    public MainMenu getMainMenu(){ return this.mainMenu; }
 }

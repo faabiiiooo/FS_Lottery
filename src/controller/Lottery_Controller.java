@@ -8,13 +8,8 @@ import javafx.event.Event;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ToggleButton;
 import javafx.stage.Stage;
-import model.Game;
-import model.Lottery_Model;
-import model.NumberGen;
-import view.GameView;
-import view.Lottery_View;
-import view.NumberView;
-import view.SimulateProgress;
+import model.*;
+import view.*;
 
 import java.util.Collections;
 
@@ -24,6 +19,7 @@ public class Lottery_Controller {
     private Stage primaryStage;
     private Lottery_Model model;
     private Lottery_View view;
+    private AddMoneyView moneyView;
     //private NumberView numView;
 
 
@@ -41,6 +37,10 @@ public class Lottery_Controller {
     private void setViewsOnAction(){
 
         model.getStoreWins().addListener((ListChangeListener)c -> displayWins());
+        this.primaryStage.setOnCloseRequest(e -> {
+            model.getMoney().saveToFile();
+            Jackpot.saveToFile();
+        });
 
 
 
@@ -58,42 +58,18 @@ public class Lottery_Controller {
 
         }
 
-
-        for(GameView gv : view.getGameViews()){
-            gv.getTipView().getNumOfReplays().textProperty().addListener(((observable, oldValue, newValue) -> {
-                if(!newValue.matches("\\d{0,2}")|| newValue.isEmpty()){
-                    gv.getTipView().getNumOfReplays().setStyle("-fx-text-fill: red");
-                    view.getControlArea().getBtnSimulateLottery().setDisable(true);
-                } else {
-                    gv.getTipView().getNumOfReplays().setStyle("-fx-text-fill: green");
-                    view.getControlArea().getBtnSimulateLottery().setDisable(false);
-                }
-            }));
-
-            gv.getTipView().getReplay().selectedProperty().addListener(((observable, oldValue, newValue) -> {
-                if(!newValue){
-                    gv.getTipView().getNumOfReplays().setDisable(true);
-                    gv.getTipView().getSaveReplay().setDisable(true);
-                } else {
-                    gv.getTipView().getNumOfReplays().setDisable(false);
-                    gv.getTipView().getSaveReplay().setDisable(false);
-                }
-            }));
-
-            gv.getTipView().getSaveReplay().setOnAction(e -> {
-                model.getGames().get(view.getGameViews().indexOf(gv)).setReplay(true);
-                model.getGames().get(view.getGameViews().indexOf(gv)).setNumReplay(
-                        Integer.parseInt(gv.getTipView().getNumOfReplays().getText()));
-                gv.getTipView().getSaveReplay().setDisable(true);
-                gv.getTipView().getNumOfReplays().setDisable(true);
-                gv.getTipView().getReplay().setDisable(true);
-            });
-        }
-
         view.getBtnAddGame().setOnAction(e -> addGame());
         view.getBtnRemoveGame().setOnAction(e -> removeGame());
+
         view.getControlArea().getBtnSimulateLottery().setOnAction(e -> simulateLotto());
         view.getControlArea().getBtnResetLottery().setOnAction(e -> resetLotto());
+
+        view.getMainMenu().getAddMoney().setOnAction(e -> displayAddMoneyWindow());
+        view.getMainMenu().getShowJackpot().setOnAction(e -> displayJackpotWindow());
+        view.getMainMenu().getShowStats().setOnAction(e -> {
+            Statistics stats = new Statistics();
+            StatisticsView viewStats = new StatisticsView(stats);
+        });
 
 
     }
@@ -105,8 +81,7 @@ public class Lottery_Controller {
         //display winNumbers
         view.getWinNumbersView().displayWinNumbers(generator.getWinNumbers(),generator.getWinLuckyTip());
         //model evaluates lotto
-        SimulateProgress progressWindow = new SimulateProgress();
-        progressWindow.getProgressBar().progressProperty().bind(model.getOtherPlayer().progressProperty());
+
         model.playLotto();
 
         //view.disableToggleButtons();
@@ -206,5 +181,26 @@ public class Lottery_Controller {
             System.out.println("Error!");
         }
 
+    }
+
+    private void displayAddMoneyWindow(){
+        moneyView = new AddMoneyView();
+        moneyView.getBtnAddMoney().setOnAction(e -> addMoney());
+    }
+
+    private void addMoney(){
+        try {
+            double amount = Double.parseDouble(moneyView.getTxtAddMoney().getText());
+            if(amount > 0){
+                model.getMoney().transferWin(amount);
+                moneyView.getStage().close();
+            }
+        } catch (NumberFormatException e){
+            moneyView.getTxtAddMoney().setText("Please enter a Number");
+        }
+    }
+
+    private void displayJackpotWindow(){
+        JackpotView jpView = new JackpotView();
     }
 }

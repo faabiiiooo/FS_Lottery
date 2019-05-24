@@ -3,9 +3,7 @@ package model;
 import app.Lottery;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
 
-import javax.print.attribute.standard.MediaSize;
 import java.util.ArrayList;
 
 
@@ -17,7 +15,6 @@ public class Lottery_Model {
     private static int gameIdTemplate = 0;
     private final Money money;
     protected static int count61;
-    private final OtherPlayer otherPlayer = new OtherPlayer();
 
 
 
@@ -39,7 +36,10 @@ public class Lottery_Model {
     public void playLotto(){
 
         storeWins.clear();
-        new Thread(otherPlayer).start();
+
+        for(int i = 0; i < games.size(); i++){
+            money.reduceMoney();
+        }
 
         for(Game g : games){
             ArrayList<Integer> tempTips = new ArrayList<>();
@@ -97,7 +97,6 @@ public class Lottery_Model {
 
     public Money getMoney(){return this.money;}
 
-    public OtherPlayer getOtherPlayer(){return this.otherPlayer; }
 
 
 

@@ -1,8 +1,11 @@
 package model;
 
+import java.io.*;
+import java.util.ArrayList;
+
 public class Jackpot {
 
-    public static double jackpot = 1000000;
+    public static double jackpot;
     private final static double jack6 = 1000000;
     private final static double jack51 = 10000;
     private final static double jack5 = 1000;
@@ -12,6 +15,43 @@ public class Jackpot {
     private final static double jack3 = 10;
 
     private final static double jackLower = 0;
+
+    private static File jackpotFile;
+
+    public static void importJackpot(){
+        jackpotFile = new File("./src/resources/jackpotFile.txt");
+
+        if(jackpotFile.exists()){
+            try(BufferedReader reader = new BufferedReader(new FileReader(jackpotFile))){
+
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    jackpot = Double.parseDouble(line);
+                }
+
+
+            } catch (IOException e){
+                e.printStackTrace();
+            }
+        } else {
+            jackpot = 1000000;
+        }
+
+    }
+
+    public static void saveToFile(){
+        jackpotFile = new File("./src/resources/jackpotFile.txt");
+
+        try(FileWriter writer = new FileWriter(jackpotFile)){
+
+            jackpotFile.createNewFile();
+            writer.write(jackpot+"");
+            writer.flush();
+
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+    }
 
     public static double checkJackpotWon(WinType winType){
 
@@ -59,9 +99,24 @@ public class Jackpot {
         jackpot = 1000000;
     }
 
+    public static ArrayList<Double> getJackpotsAsList(){
+        ArrayList<Double> jackpots = new ArrayList<>();
+        jackpots.add(jack3);
+        jackpots.add(jack31);
+        jackpots.add(jack4);
+        jackpots.add(jack41);
+        jackpots.add(jack5);
+        jackpots.add(jack51);
+        jackpots.add(jack6);
+        jackpots.add(jackpot);
+
+        return jackpots;
+    }
+
     private static void increaseJackpot(){
         jackpot += 1000000;
     }
+
 
 
 }

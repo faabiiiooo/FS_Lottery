@@ -23,14 +23,12 @@ public class Money {
 
 
         moneyFile = new File("./src/resources/moneyFile.txt");
-        System.out.println(moneyFile.getAbsolutePath());
-        System.out.println(moneyFile.exists());
 
         if(moneyFile.exists()) {
             try (BufferedReader reader = new BufferedReader(new FileReader(moneyFile))) {
 
                 String line;
-                String amountOfMoney;
+                //String amountOfMoney;
                 while ((line = reader.readLine()) != null) {
                     amount = Double.parseDouble(line);
                     this.asString.set(amount+"");

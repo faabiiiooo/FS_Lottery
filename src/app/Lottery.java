@@ -3,6 +3,7 @@ package app;
 import controller.Lottery_Controller;
 import javafx.application.Application;
 import javafx.stage.Stage;
+import model.Jackpot;
 import model.Lottery_Model;
 import view.Lottery_View;
 
@@ -20,8 +21,10 @@ public class Lottery extends Application {
         launch(args);
     }
 
+
     public void start(Stage primaryStage){
 
+        Jackpot.importJackpot();
         Lottery_Model model = new Lottery_Model();
         Lottery_View view = new Lottery_View(primaryStage, model);
         Lottery_Controller controller = new Lottery_Controller(primaryStage,model,view);

@@ -109,3 +109,63 @@
 .tb-winnerNum:selected{
     -fx-background-color: green;
 }
+
+/*Control Area*/
+#hbox-controlArea{
+    -fx-vgap: 20;
+    -fx-spacing: 10;
+}
+
+.btn-controlArea{
+    -fx-background-color: red;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-pref-height: 30;
+    -fx-pref-width: 120;
+}
+
+.btn-controlArea:hover{
+    -fx-background-color: #545454;
+}
+
+/*Menu Bar*/
+
+#menuBar-main{
+    -fx-background-color: lightgrey;
+}
+#menuBar-main .menu-item{
+    -fx-background-color: lightgrey;
+}
+
+#menuBar-main .menu-item .label{
+    -fx-background-color: lightgrey;
+}
+
+#menuBar-main .context-menu{
+    -fx-background-color: lightgrey;
+}
+
+/*Add money View*/
+
+#lbl-addMoneyView{
+    -fx-padding: 10;
+    -fx-text-alignment: center;
+}
+
+/*Jackpot View */
+#grid-jackpotView{
+    -fx-padding: 15;
+    -fx-hgap: 40;
+    -fx-vgap: 15;
+}
+
+
+/* Statistics View*/
+
+#lbl-statNumGames{
+    -fx-pref-height: 30;
+}
+
+#tbl-stats .table-row-cell{
+    -fx-background-color: #FFE8E8;
+}
