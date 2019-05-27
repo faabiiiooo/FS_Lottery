@@ -1,9 +1,7 @@
 package controller;
 
 import app.Lottery;
-import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ToggleButton;
@@ -11,7 +9,6 @@ import javafx.stage.Stage;
 import model.*;
 import view.*;
 
-import java.util.Collections;
 
 
 public class Lottery_Controller {
@@ -20,7 +17,6 @@ public class Lottery_Controller {
     private Lottery_Model model;
     private Lottery_View view;
     private AddMoneyView moneyView;
-    //private NumberView numView;
 
 
     public Lottery_Controller(Stage primaryStage, Lottery_Model model, Lottery_View view){
@@ -34,10 +30,11 @@ public class Lottery_Controller {
 
     }
 
-    private void setViewsOnAction(){
+    private void setViewsOnAction(){  //sets everything what has to be on action or defines change Listeners
 
-        model.getStoreWins().addListener((ListChangeListener)c -> displayWins());
-        this.primaryStage.setOnCloseRequest(e -> {
+        model.getStoreWins().addListener((ListChangeListener)c -> displayWins());  //when WinEval passed update List to show what you've won
+
+        this.primaryStage.setOnCloseRequest(e -> {  //Save jakpot to file before program gets terminated
             model.getMoney().saveToFile();
             Jackpot.saveToFile();
         });
@@ -46,11 +43,11 @@ public class Lottery_Controller {
 
         view.getGameList().getSelectionModel().selectedIndexProperty().addListener(((observable, oldValue, newValue) -> {
             view.showOtherGame((int)newValue);
-        }));
+        }));  //make the GameList display a new game when other entry is clicked
 
         for(int i = 0; i < view.getGameViews().size();i++){
             for(ToggleButton tb : view.getGameViews().get(i).getTipView().getTips().getToggleButtons()){
-                tb.setOnAction(e -> tipSelected(e));
+                tb.setOnAction(e -> tipSelected(e));  // set togglebuttons on action for each GameView
             }
             for(ToggleButton tb : view.getGameViews().get(i).getTipView().getLuckyTip().getToggleButtons()){
                 tb.setOnAction(e -> luckyTipSelected(e));
@@ -68,7 +65,7 @@ public class Lottery_Controller {
         view.getMainMenu().getShowJackpot().setOnAction(e -> displayJackpotWindow());
         view.getMainMenu().getShowStats().setOnAction(e -> {
             Statistics stats = new Statistics();
-            StatisticsView viewStats = new StatisticsView(stats);
+            StatisticsView viewStats = new StatisticsView(stats);  //Generate Statistics window
         });
 
 
@@ -90,7 +87,7 @@ public class Lottery_Controller {
 
     private void resetLotto(){
 
-
+        //reload Model and View and set them on action again.
 
         model = new Lottery_Model();
         view = new Lottery_View(primaryStage,model);
@@ -108,12 +105,12 @@ public class Lottery_Controller {
     }
 
 
-    private void addGame(){
+    private void addGame(){  //Handle the + Button to ad a new game
 
         if(model.getGames().size()< Lottery.MAX_GAMES){
 
-            if(model.getMoney().reduceMoney()) {
-                model.addGame();
+            if(model.getMoney().reduceMoney()) { //check if user has enough money to add a game
+                model.addGame();  //Add a Game in Model and View
                 view.addGame();
 
                 setViewsOnAction();
@@ -126,10 +123,10 @@ public class Lottery_Controller {
     }
 
     private void removeGame(){
-        if(model.getGames().size() <= Lottery.MIN_TIP_FIELDS){
+        if(model.getGames().size() <= Lottery.MIN_TIP_FIELDS){ //There must be always two Games.
 
         } else {
-            Game g = view.getGameList().getSelectionModel().getSelectedItem();
+            Game g = view.getGameList().getSelectionModel().getSelectedItem(); //Remove Game from MOdel and View
             GameView gv = view.getGameViews().get(g.GAME_ID);
 
             model.removeGame(g);
@@ -183,12 +180,12 @@ public class Lottery_Controller {
 
     }
 
-    private void displayAddMoneyWindow(){
+    private void displayAddMoneyWindow(){ //open new Window to pay in Money
         moneyView = new AddMoneyView();
         moneyView.getBtnAddMoney().setOnAction(e -> addMoney());
     }
 
-    private void addMoney(){
+    private void addMoney(){  //get Money from MoneyWindow and add it to account of player
         try {
             double amount = Double.parseDouble(moneyView.getTxtAddMoney().getText());
             if(amount > 0){

@@ -1,6 +1,6 @@
 package model;
 
-import javafx.beans.property.SimpleDoubleProperty;
+
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
@@ -10,7 +10,7 @@ public class StatisticNumber {
     private final SimpleIntegerProperty frequency = new SimpleIntegerProperty();
     private final SimpleStringProperty statEval = new SimpleStringProperty();
 
-    public StatisticNumber(int number, int frequency, String statEval){
+    public StatisticNumber(int number, int frequency, String statEval){ //set Values for each stat Number ( 1 - 42)
         this.number.set(number);
         this.frequency.set(frequency);
         this.statEval.set(statEval);

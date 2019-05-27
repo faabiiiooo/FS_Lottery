@@ -24,11 +24,11 @@ public class Money {
 
         moneyFile = new File("./src/resources/moneyFile.txt");
 
-        if(moneyFile.exists()) {
+        if(moneyFile.exists()) { //get money from file if one exists else set default amount of 50
             try (BufferedReader reader = new BufferedReader(new FileReader(moneyFile))) {
 
                 String line;
-                //String amountOfMoney;
+
                 while ((line = reader.readLine()) != null) {
                     amount = Double.parseDouble(line);
                     this.asString.set(amount+"");
@@ -44,7 +44,7 @@ public class Money {
 
     }
 
-    public boolean reduceMoney(){
+    public boolean reduceMoney(){ //reduce Money per Game plaed
 
         boolean enoughMoney = false;
 
@@ -61,7 +61,7 @@ public class Money {
 
     public void payBack(){
         setAmountOfMoney(amount+Game.PRICE);
-    }
+    } //used for Payback if user delets a Game befor simulating
 
     public void transferWin(double win){
         setAmountOfMoney(amount+win);
@@ -72,21 +72,11 @@ public class Money {
         this.asString.set(amount+"");
     }
 
-    public double getAmountOfMoney(){ return this.amount;}
-
-    public String getAsString() {
-        return asString.get();
-    }
-
     public SimpleStringProperty asStringProperty() {
         return asString;
     }
 
-    public void setAsString(String asString) {
-        this.asString.set(asString);
-    }
-
-    public void saveToFile(){
+    public void saveToFile(){ //save money to .txt file.
 
         File moneyFile = new File("./src/resources/moneyFile.txt");
 

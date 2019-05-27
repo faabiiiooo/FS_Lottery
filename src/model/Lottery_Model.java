@@ -10,8 +10,8 @@ import java.util.ArrayList;
 public class Lottery_Model {
 
 
-    private final ObservableList<Game> games = FXCollections.observableArrayList();
-    private final ObservableList<String> storeWins = FXCollections.observableArrayList();
+    private final ObservableList<Game> games = FXCollections.observableArrayList(); //All Games
+    private final ObservableList<String> storeWins = FXCollections.observableArrayList(); //WinnEvals
     private static int gameIdTemplate = 0;
     private final Money money;
     protected static int count61;
@@ -22,7 +22,7 @@ public class Lottery_Model {
 
         count61 = 0;
         money = new Money();
-
+        //Create two Games on First run or reset.
         for(int i = 0; i < Lottery.MIN_TIP_FIELDS; i++){
             games.add(new Game(i));
             money.reduceMoney();
@@ -41,7 +41,7 @@ public class Lottery_Model {
             money.reduceMoney();
         }
 
-        for(Game g : games){
+        for(Game g : games){ //get the tips from every Game. and evaluate them.
             ArrayList<Integer> tempTips = new ArrayList<>();
             for(int i : g.getTipsSelected()){
                 tempTips.add(i);
@@ -54,6 +54,9 @@ public class Lottery_Model {
             }
             storeWins.add("Game "+(g.GAME_ID+1)+" :\t"+WinType.asString(winType));
         }
+        if(count61 == 0){
+            Jackpot.increaseJackpot();
+        }
 
         if(count61 > 0){
             double jackpot = Jackpot.jackpot / count61;
@@ -61,22 +64,10 @@ public class Lottery_Model {
             money.transferWin(jackpot);
         }
 
-        money.saveToFile();
-
-       // for(String s : storeWins) System.out.println(s);
-    }
-
-    public void resetLotto(){
-
-        games.clear();
-        for(int i = 0; i < Lottery.MIN_TIP_FIELDS; i++){
-            games.add(new Game(i));
-            money.reduceMoney();
-            gameIdTemplate = i+1;
-        }
-
+        money.saveToFile(); //all transactions are done, save account to file.
 
     }
+
 
     public void addGame(){
         games.add(new Game(gameIdTemplate));
@@ -85,10 +76,6 @@ public class Lottery_Model {
 
     public void removeGame(Game game){
         games.remove(game);
-    }
-
-    public int getGameId(Game game){
-        return games.indexOf(game);
     }
 
     public ObservableList<Game> getGames() { return this.games; }

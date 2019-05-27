@@ -33,7 +33,7 @@ public class Statistics {
 
     }
 
-    private void createStats(){
+    private void createStats(){ //create stats based on file.
         DecimalFormat fmt = new DecimalFormat("00.0#%");
         if(winNumbersFile.exists()){
             this.importData();
@@ -57,7 +57,7 @@ public class Statistics {
 
     }
 
-    private void importData(){
+    private void importData(){ //imports Data from file
 
         try(BufferedReader reader = new BufferedReader(new FileReader(winNumbersFile))){
 

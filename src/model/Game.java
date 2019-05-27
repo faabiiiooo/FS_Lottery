@@ -9,23 +9,18 @@ import java.util.ArrayList;
 
 public class Game {
 
-    public final static double PRICE = 2.5;
+    public final static double PRICE = 2.5; //price per game
 
-    public final int GAME_ID;
+    public final int GAME_ID; // unique GameID
 
-    private final ArrayList<Integer> tipNumbers;
+    private final ArrayList<Integer> tipNumbers; //Numbers from 1 to 42
 
-    private final ObservableList<Integer> tipsSelected = FXCollections.observableArrayList();
+    private final ObservableList<Integer> tipsSelected = FXCollections.observableArrayList(); //selected Numbers
 
-    private int luckyTip= -1;
+    private int luckyTip= -1; //selected Luckytip, if none specified = -1
 
-    private boolean replay = false;
 
-    private int numReplay;
-
-    private boolean gameFilled;
-
-    public Game(int gameId){
+    public Game(int gameId){ //Generate the numbers from 1  to 42
         GAME_ID = gameId;
         tipNumbers = new ArrayList<>();
         for(int i = 0; i < Lottery.HIGHEST_TIP; i++){
@@ -37,7 +32,7 @@ public class Game {
 
     public ObservableList<Integer> getTipsSelected(){ return this.tipsSelected; }
 
-    public void addSelectedTip(int tip){
+    public void addSelectedTip(int tip){ //gets Called when a tip gets Selected
 
         if(!tipsSelected.contains(tip)) {
             tipsSelected.add(tip);
@@ -60,14 +55,10 @@ public class Game {
 
     public int getLuckyTip(){return this.luckyTip;}
 
-    public void setReplay(boolean replay){ this.replay = replay;}
-
-    public boolean getReplay(){return this.replay;}
-
     public String toString(){
         return "Game Nr.: "+(GAME_ID+1);
     }
 
-    public void setNumReplay(int numReplay){ this.numReplay = numReplay; }
+
 
 }
